@@ -1,31 +1,44 @@
+plugins=(git zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
+
 export ZSH="$HOME/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
 
-ZSH_THEME=""
+# User configuration
 
-plugins=(
-  git
-  sudo
-  z
-  docker
-  kubectl
-  macos
-  ubuntu
-)
+# FUNCTIONS
 
-source "$ZSH/oh-my-zsh.sh"
+function cpgh() {
+    local server=$1
+    if [[ -z $server ]]; then
+        echo "Usage: sync_infocmp <server>"
+        return 1
+    fi
+    infocmp -x | ssh "$server" -- tic -x -
+}
 
-# Handy aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias gs='git status'
-alias gd='git diff'
 
-# Better history
-HISTSIZE=50000
-SAVEHIST=50000
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_REDUCE_BLANKS
+# Golang environment variables
+export GOROOT=$(brew --prefix go)/libexec
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin:$PATH
 
-# Starship prompt
+#PS1='%F{cyan}%n@%m%f %F{yellow}%~%f %# '
+
+
+# pnpm
+export PNPM_HOME="/Users/hunordori/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.4.1 # run chruby to see actual version
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
