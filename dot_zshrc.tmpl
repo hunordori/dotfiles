@@ -1,0 +1,55 @@
+plugins=(git docker zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting{{ if eq .chezmoi.os "darwin" }} macos{{ end }}{{ if eq .chezmoi.os "linux" }} ubuntu{{ end }})
+
+export ZSH="$HOME/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# FUNCTIONS
+
+function cpgh() {
+    local server=$1
+    if [[ -z $server ]]; then
+        echo "Usage: cpgh <server>"
+        return 1
+    fi
+    infocmp -x | ssh "$server" -- tic -x -
+}
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Golang environment variables (macOS)
+export GOROOT=$(brew --prefix go)/libexec
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin:$PATH
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# chruby (macOS)
+if [[ -f /opt/homebrew/opt/chruby/share/chruby/chruby.sh ]]; then
+    source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+    source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+    chruby ruby-3.4.1
+fi
+{{ end -}}
+
+{{ if eq .chezmoi.os "linux" -}}
+# Golang environment variables (Linux)
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:/usr/local/go/bin:$HOME/.local/bin:$PATH
+{{ end -}}
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# zoxide
+eval "$(zoxide init zsh)"
+
+# starship prompt
+eval "$(starship init zsh)"

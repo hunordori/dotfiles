@@ -9,4 +9,4 @@ if ! command -v chezmoi >/dev/null 2>&1; then
   fi
 fi
 
-chezmoi init --apply hunordoriy
+chezmoi init --apply hunordori

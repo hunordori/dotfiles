@@ -45,7 +45,7 @@ ssh_only = false
 format = '[@$hostname](bg:#9A348E)'
 style = "bg:#9A348E"
 disabled = false
-aliases = { "Hunor-MacBook-Pro-14" = "🍎" }
+aliases = { "Hunor-MacBook-Pro-14" = "󰀵" }
 
 # An alternative to the username module which displays a symbol that
 # represents the current operating system
@@ -59,7 +59,7 @@ Ubuntu = "󰕈"
 SUSE = ""
 Raspbian = "󰐿"
 Mint = "󰣭"
-Macos = ""
+Macos = "󰀵"
 Manjaro = ""
 Linux = "󰌽"
 Gentoo = "󰣨"

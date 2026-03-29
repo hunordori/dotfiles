@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS: install via Homebrew
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+brew install starship zoxide
+{{ end -}}
+
+{{ if eq .chezmoi.os "linux" -}}
+# Linux: install starship and zoxide
+if ! command -v starship >/dev/null 2>&1; then
+    echo "Installing starship..."
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+if ! command -v zoxide >/dev/null 2>&1; then
+    echo "Installing zoxide..."
+    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+{{ end -}}

@@ -1,0 +1,7 @@
+README.md
+scripts/
+
+# Ghostty config only on macOS
+{{ if ne .chezmoi.os "darwin" }}
+Library/
+{{ end }}
